@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model call {
+  id            Int       @id @default(autoincrement())
+  device_id     Int
+  button        Int
+  time          DateTime  @default(now()) @db.Timestamp(6)
+  time_finished DateTime? @db.Timestamp(6)
+  battery_level Int       @db.SmallInt
+  device        device    @relation(fields: [device_id], references: [id])
+
+  @@index([time], name: "call_time")
+  @@index([time_finished], name: "call_time_finished")
+}
+
+model device {
+  id          Int    @id @default(autoincrement())
+  name        String
+  mac_address String @unique @db.VarChar(21)
+  call        call[]
+}
