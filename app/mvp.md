@@ -2,7 +2,7 @@
 - list, add, edit, delete devices
 - list, add, edit, delete groups
 - assign and remove devices to groups
-- filtering list of devices that requested staff by groups
+- filter list of devices that requested staff by groups
 - statistics
 - app setttings
   - is login required to access app

@@ -24,5 +24,13 @@ model device {
   id          Int    @id @default(autoincrement())
   name        String
   mac_address String @unique @db.VarChar(21)
+  group_id    Int?
+  group       group? @relation(fields: [group_id], references: [id])
   call        call[]
+}
+
+model group {
+  id     Int      @id @default(autoincrement())
+  name   String   @db.VarChar(100)
+  device device[]
 }
