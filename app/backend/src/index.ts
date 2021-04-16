@@ -4,10 +4,11 @@ import cookieParser from "cookie-parser";
 import { prisma } from "./db/prisma";
 import groupsRouter from "./routes/group";
 import deviceRouter from "./routes/device";
-import callRouter from "./routes/call";
+import callRouter from "./routes/request";
 import processSessionCookies from "./middleware/processSessionCookie";
 import userRouter from "./routes/user";
 import { errorHandler } from "./middleware/errorHandler";
+import establishmentRouter from "./routes/establishment";
 
 const PORT = 8081;
 
@@ -25,6 +26,7 @@ app.use(groupsRouter);
 app.use(deviceRouter);
 app.use(callRouter);
 app.use(userRouter);
+app.use(establishmentRouter);
 
 app.use(errorHandler);
 

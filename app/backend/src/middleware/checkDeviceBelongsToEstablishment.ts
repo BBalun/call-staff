@@ -3,7 +3,7 @@ import { prisma } from "../db/prisma";
 
 // checks for macAddress parameter and verifies that device belongs to users establishment
 export async function checkDeviceBelongsToEstablishment(req: Request, res: Response, next: NextFunction) {
-  const macAddress: string | null = req.params.macAddress;
+  const macAddress: string | null = req.params.macAddress || req.body.macAddress; // TODO fix this
 
   if (!macAddress) {
     return res.status(400).json({

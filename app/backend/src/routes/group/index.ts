@@ -1,10 +1,11 @@
 import express from "express";
 import { prisma } from "../../db/prisma";
 import { checkGroupBelongsToEstablishment } from "../../middleware/checkGroupBelongsToEstablishment";
+import loginRequired from "../../middleware/loginRequired";
 
 const router = express.Router();
 
-router.get("/groups", async (req, res) => {
+router.get("/groups", loginRequired, async (req, res) => {
   const groups = await prisma.group.findMany({
     where: {
       establishmentId: req.user?.establishmentId,
@@ -14,7 +15,7 @@ router.get("/groups", async (req, res) => {
   return res.json(groups);
 });
 
-router.get("/group/:id", checkGroupBelongsToEstablishment, async (req, res) => {
+router.get("/group/:id", loginRequired, checkGroupBelongsToEstablishment, async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
@@ -33,7 +34,7 @@ router.get("/group/:id", checkGroupBelongsToEstablishment, async (req, res) => {
   return res.json(group);
 });
 
-router.post("/group", async (req, res) => {
+router.post("/group", loginRequired, async (req, res) => {
   const { name } = req.body;
 
   if (!name) {
@@ -53,9 +54,8 @@ router.post("/group", async (req, res) => {
   return res.json(result);
 });
 
-router.put("/group/:id", checkGroupBelongsToEstablishment, async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
+router.put("/group", loginRequired, checkGroupBelongsToEstablishment, async (req, res) => {
+  const { id, name } = req.body;
 
   if (!id || !name) {
     return res.status(400).json({
@@ -76,7 +76,7 @@ router.put("/group/:id", checkGroupBelongsToEstablishment, async (req, res) => {
   return res.json(result);
 });
 
-router.delete("/group/:id", checkGroupBelongsToEstablishment, async (req, res) => {
+router.delete("/group/:id", loginRequired, checkGroupBelongsToEstablishment, async (req, res) => {
   const { id } = req.params;
 
   if (!id) {

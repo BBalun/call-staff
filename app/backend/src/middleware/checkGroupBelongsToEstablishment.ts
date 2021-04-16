@@ -1,20 +1,20 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../db/prisma";
 
-// checks groupId and whether that group belongs to users establishment
+// checks id and whether that group belongs to users establishment
 export async function checkGroupBelongsToEstablishment(req: Request, res: Response, next: NextFunction) {
-  const { groupId } = req.params;
+  const id = req.params.id || req.body.id; // TODO fix this
 
-  if (!groupId) {
+  if (!id) {
     return res.status(400).json({
       status: "error",
-      msg: "groupId is required",
+      msg: "id is required",
     });
   }
 
   const group = await prisma.group.findUnique({
     where: {
-      id: groupId,
+      id,
     },
   });
 

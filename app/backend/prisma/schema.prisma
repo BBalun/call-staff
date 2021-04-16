@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASEURL")
+  url      = env("DATABASE_URL")
 }
 
 model device {
@@ -19,7 +19,7 @@ model device {
 }
 
 model establishment {
-  id      String   @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
+  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name    String   @db.VarChar(50)
   button1 String   @default("button1") @db.VarChar(20)
   button2 String   @default("button2") @db.VarChar(20)
@@ -32,7 +32,7 @@ model establishment {
 }
 
 model group {
-  id              String        @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
+  id              String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name            String        @unique @db.VarChar(50)
   establishmentId String        @map("establishment_id") @db.Uuid
   establishment   establishment @relation(fields: [establishmentId], references: [id])
@@ -40,23 +40,23 @@ model group {
 }
 
 model request {
-  id           String   @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
-  button       Int      @db.SmallInt
-  time         DateTime @default(now()) @db.Timestamp(6)
-  timeFinished Int      @map("time_finished")
-  battery      Int      @db.SmallInt
-  deviceMac    String   @map("device_mac")
-  device       device   @relation(fields: [deviceMac], references: [macAddress])
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  button       Int       @db.SmallInt
+  time         DateTime  @default(now()) @db.Timestamp(6)
+  timeFinished DateTime? @map("time_finished") @db.Timestamp(6)
+  battery      Int       @db.SmallInt
+  deviceMac    String    @map("device_mac")
+  device       device    @relation(fields: [deviceMac], references: [macAddress])
 }
 
 model role {
-  id   String @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
+  id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name String @unique
   user user[]
 }
 
 model user {
-  id              String        @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
+  id              String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   email           String        @unique
   username        String
   password        String

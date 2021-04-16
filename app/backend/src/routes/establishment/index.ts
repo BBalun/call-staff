@@ -22,7 +22,7 @@ router.put("/establishment", loginRequired, async (req, res) => {
   if (!id || !name || !button1 || !button2 || !button3 || !button4 || !button5) {
     return res.status(400).json({
       status: "error",
-      msg: "id or name is missing",
+      msg: "id, name, button1-button5 are required",
     });
   }
 

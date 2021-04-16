@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 import { prisma } from "../../db/prisma";
 import { checkDeviceBelongsToEstablishment } from "../../middleware/checkDeviceBelongsToEstablishment";
 import loginRequired from "../../middleware/loginRequired";
@@ -65,14 +65,14 @@ router.post("/device", loginRequired, async (req, res) => {
   return res.json(result);
 });
 
-router.put("/device/:macAddress", loginRequired, checkDeviceBelongsToEstablishment, async (req, res) => {
-  const { name, battery, groupId } = req.body;
-  const macAddress = req.params.macAddress;
+router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (req, res) => {
+  // const { macAddress, name, battery, groupId } = req.body;
+  const { macAddress, name, groupId } = req.body;
 
-  if (!macAddress || !name || !battery || !groupId) {
+  if (!macAddress || !name) {
     return res.status(400).json({
       status: "error",
-      msg: "name, mac address and group id are required",
+      msg: "name, mac address id are required",
     });
   }
 
@@ -82,7 +82,7 @@ router.put("/device/:macAddress", loginRequired, checkDeviceBelongsToEstablishme
     },
     data: {
       name,
-      battery,
+      // battery,
       groupId,
     },
   });
