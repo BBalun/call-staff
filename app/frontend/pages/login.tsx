@@ -3,6 +3,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormLabel, Input, Button, Center, Heading, Text, Box, Divider } from "@chakra-ui/react";
 import Link from "next/link";
+import { config } from "../config";
+import { useRouter } from "next/router";
+import { loginUser } from "../auth/auth";
 
 interface IFormInput {
   email: string;
@@ -11,7 +14,7 @@ interface IFormInput {
 
 const schema = yup.object().shape({
   email: yup.string().email("Wrong format").required("Email is required"),
-  password: yup.string().required("Password is required").min(5, "Password has to be at leas 5 characters long"),
+  password: yup.string().required("Password is required"),
 });
 
 function Login() {
@@ -23,10 +26,18 @@ function Login() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => alert(JSON.stringify(data));
+  const router = useRouter();
+
+  async function onSubmit(userInfo: IFormInput) {
+    if (await loginUser(userInfo)) {
+      router.push("/home");
+      return;
+    }
+    alert("wrong password"); // TODO
+  }
 
   return (
-    <Center height="100vh">
+    <Center height="100vh" bg="blackAlpha.100">
       <Box p="7" w="sm" borderWidth="thin" borderRadius="12" bg="white" borderColor="gray.100" boxShadow="xl">
         <Heading pb="1" textAlign="center">
           Login

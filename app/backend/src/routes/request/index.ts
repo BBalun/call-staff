@@ -23,6 +23,9 @@ router.get("/requests", loginRequired, async (req, res) => {
 
   const result = await prisma.request.findMany({
     where,
+    orderBy: {
+      time: "asc",
+    },
   });
 
   return res.json(result);

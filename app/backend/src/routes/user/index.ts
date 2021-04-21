@@ -63,7 +63,7 @@ router.post("/register", async (req, res) => {
   // set session cookie
   res.cookie("session", newUser.session, {
     httpOnly: true,
-    maxAge: 60 * 60 * 24 * 7, // one week
+    maxAge: 1000 * 60 * 60 * 24 * 7, // one week
   });
 
   return res.json({
@@ -128,7 +128,7 @@ router.post("/login", async (req, res) => {
   // set session cookie
   res.cookie("session", user.session, {
     httpOnly: true,
-    maxAge: 60 * 60 * 24 * 7, // one week
+    maxAge: 1000 * 60 * 60 * 24 * 7, // one week
   });
 
   return res.json({
