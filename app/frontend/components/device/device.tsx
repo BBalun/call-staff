@@ -1,6 +1,7 @@
 import { IDevice } from "../../interfaces/device";
 import { Text, Box, Button } from "@chakra-ui/react";
 import { deleteDevice } from "../../utils/deleteDevice";
+import EditDeviceButton from "./editDeviceButton";
 
 interface IDeviceProps extends IDevice {
   reload: () => void;
@@ -21,10 +22,10 @@ export default function Device(props: IDeviceProps) {
       <Box>
         <Text>Mac address: {props.macAddress}</Text>
         <Text>Name: {props.name}</Text>
-        <Text>Battery level: {props.battery ?? "___"}%</Text>
-        <Text>Group: {props.groupId}</Text>
+        <Text>Battery level: {props.battery ?? "?"}%</Text>
+        <Text>Group: {props.group?.name}</Text>
         <Button onClick={delDevice}>Delete</Button>
-        <Button>Edit</Button>
+        <EditDeviceButton {...props} />
       </Box>
     </>
   );

@@ -1,4 +1,5 @@
 import express from "express";
+import { group } from "node:console";
 import { prisma } from "../../db/prisma";
 import { checkDeviceBelongsToEstablishment } from "../../middleware/checkDeviceBelongsToEstablishment";
 import loginRequired from "../../middleware/loginRequired";
@@ -13,6 +14,9 @@ router.get("/devices", loginRequired, async (req, res, next) => {
       },
       include: {
         group: true,
+      },
+      orderBy: {
+        name: "asc",
       },
     });
 
@@ -59,7 +63,7 @@ router.get("/device/:macAddress", loginRequired, async (req, res, next) => {
 
 router.post("/device", loginRequired, async (req, res, next) => {
   const user = req.user!;
-  const { name, macAddress } = req.body;
+  const { name, macAddress, groupId } = req.body;
 
   if (!name || !macAddress) {
     return res.status(400).json({
@@ -73,12 +77,13 @@ router.post("/device", loginRequired, async (req, res, next) => {
         name,
         macAddress,
         establishmentId: user.establishmentId,
+        groupId,
       },
     });
 
     return res.json({ status: "ok", data: result });
   } catch (e) {
-    next(e);
+    return res.status(400).json({ status: "error", msg: "name and mac address has to be unique" });
   }
 });
 
@@ -91,6 +96,21 @@ router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (r
       status: "error",
       msg: "name, mac address id are required",
     });
+  }
+  if (groupId) {
+    try {
+      const group = await prisma.group.findUnique({
+        where: {
+          id: groupId,
+        },
+      });
+      if (!group) {
+        return res.status(400).json({ status: "error", msg: "group does not exits" });
+      }
+    } catch (e) {
+      next(e);
+      return;
+    }
   }
 
   try {
@@ -105,9 +125,13 @@ router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (r
       },
     });
 
+    if (!result) {
+      return res.status(400).json({ status: "error", msg: "MAC address is invalid" });
+    }
+
     return res.json({ status: "ok", data: result });
   } catch (e) {
-    next(e);
+    return res.status(400).json({ status: "error", msg: "Device with same name already exists" });
   }
 });
 

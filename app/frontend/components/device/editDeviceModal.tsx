@@ -19,11 +19,23 @@ import { IGroup } from "../../interfaces/group";
 import { useEffect, useState } from "react";
 import { getGroups } from "../../utils/getGroups";
 import { createDevice } from "../../utils/createDevice";
+import { updateDevice } from "../../utils/updateDevice";
 
 interface IFormInput {
   name: string;
   macAddress: string;
   groupId: string;
+}
+
+interface IEditDeviceModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  reload: () => void;
+  device: {
+    name: string;
+    macAddress: string;
+    groupId: string;
+  };
 }
 
 const schema = yup.object().shape({
@@ -32,11 +44,11 @@ const schema = yup.object().shape({
     .required("Name is required")
     .trim()
     .min(3, "Name of the group has to be at least 3 characters long"),
-  macAddress: yup.string().required("Mac address is required").length(17, "Invalid length"),
+  macAddress: yup.string(),
   groupId: yup.string(),
 });
 
-export default function AddDeviceModal({ isOpen, onClose, reload }) {
+export default function EditDeviceModal({ isOpen, onClose, reload, device }: IEditDeviceModalProps) {
   const [groups, setGroups] = useState<IGroup[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,6 +59,8 @@ export default function AddDeviceModal({ isOpen, onClose, reload }) {
     }
     setGroups(data);
     setLoading(false);
+    setValue("macAddress", device.macAddress);
+    setValue("groupId", device.groupId ?? "none");
   }
 
   useEffect(() => {
@@ -57,16 +71,19 @@ export default function AddDeviceModal({ isOpen, onClose, reload }) {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    getValues,
   } = useForm<IFormInput>({
     resolver: yupResolver(schema),
+    defaultValues: device,
   });
 
   async function onSubmit({ macAddress, name, groupId }: IFormInput) {
     let [ok, msg] = [false, null];
     if (groupId !== "none") {
-      [ok, msg] = await createDevice({ macAddress, name, groupId });
+      [ok, msg] = await updateDevice({ macAddress, name, groupId });
     } else {
-      [ok, msg] = await createDevice({ macAddress, name });
+      [ok, msg] = await updateDevice({ macAddress, name, groupId: null });
     }
     if (!ok) {
       alert(msg); // TODO
@@ -85,7 +102,7 @@ export default function AddDeviceModal({ isOpen, onClose, reload }) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add new device</ModalHeader>
+          <ModalHeader>Edit device</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormLabel htmlFor="name">Name:</FormLabel>
@@ -95,15 +112,8 @@ export default function AddDeviceModal({ isOpen, onClose, reload }) {
               {errors.name && errors.name.message}
             </Text>
 
-            <FormLabel htmlFor="macAddress">MAC address:</FormLabel>
-            <Input type="text" {...register("macAddress")} placeholder="Enter MAC address" />
-
-            <Text pl="2" color="red" h="1rem" lineHeight="1rem" pt="2">
-              {errors.macAddress && errors.macAddress.message}
-            </Text>
-
             <FormLabel htmlFor="groupId">Group:</FormLabel>
-            <Select {...register("groupId")}>
+            <Select {...register("groupId")} defaultValue="None">
               <option value="none">None</option>
               {groups.map((group) => {
                 return (
