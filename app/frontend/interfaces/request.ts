@@ -1,8 +1,8 @@
 export interface IRequest {
   id: string;
   button: number;
-  time: Date;
-  timeFinished: Date | null;
+  time: string;
+  timeFinished: string | null;
   battery: number;
   deviceMac: string;
 }

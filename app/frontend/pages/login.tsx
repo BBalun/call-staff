@@ -3,7 +3,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormLabel, Input, Button, Center, Heading, Text, Box, Divider } from "@chakra-ui/react";
 import Link from "next/link";
-import { config } from "../config";
 import { useRouter } from "next/router";
 import { loginUser } from "../auth/auth";
 
@@ -29,11 +28,12 @@ function Login() {
   const router = useRouter();
 
   async function onSubmit(userInfo: IFormInput) {
-    if (await loginUser(userInfo)) {
+    const [res, msg] = await loginUser(userInfo);
+    if (res) {
       router.push("/home");
       return;
     }
-    alert("wrong password"); // TODO
+    alert(msg); // TODO
   }
 
   return (

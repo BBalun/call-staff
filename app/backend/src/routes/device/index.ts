@@ -5,17 +5,24 @@ import loginRequired from "../../middleware/loginRequired";
 
 const router = express.Router();
 
-router.get("/devices", loginRequired, async (req, res) => {
-  const devices = await prisma.device.findMany({
-    where: {
-      establishmentId: req.user!.establishmentId,
-    },
-  });
+router.get("/devices", loginRequired, async (req, res, next) => {
+  try {
+    const devices = await prisma.device.findMany({
+      where: {
+        establishmentId: req.user!.establishmentId,
+      },
+      include: {
+        group: true,
+      },
+    });
 
-  return res.json(devices);
+    return res.json({ status: "ok", data: devices });
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.get("/device/:macAddress", loginRequired, async (req, res) => {
+router.get("/device/:macAddress", loginRequired, async (req, res, next) => {
   // this route does not use checkDeviceBelongsToEstablishment middleware,
   // because it would result in fetching same device twice
   const { macAddress } = req.params;
@@ -27,23 +34,30 @@ router.get("/device/:macAddress", loginRequired, async (req, res) => {
     });
   }
 
-  const device = await prisma.device.findUnique({
-    where: {
-      macAddress,
-    },
-  });
-
-  if (device?.establishmentId !== req.user!.establishmentId) {
-    return res.status(400).json({
-      status: "error",
-      msg: "device does not belong to your establishment",
+  try {
+    const device = await prisma.device.findUnique({
+      where: {
+        macAddress,
+      },
+      include: {
+        group: true,
+      },
     });
-  }
 
-  return res.json(device);
+    if (device?.establishmentId !== req.user!.establishmentId) {
+      return res.status(400).json({
+        status: "error",
+        msg: "device does not belong to your establishment",
+      });
+    }
+
+    return res.json({ status: "ok", data: device });
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.post("/device", loginRequired, async (req, res) => {
+router.post("/device", loginRequired, async (req, res, next) => {
   const user = req.user!;
   const { name, macAddress } = req.body;
 
@@ -53,19 +67,22 @@ router.post("/device", loginRequired, async (req, res) => {
       msg: "name and mac address are required",
     });
   }
+  try {
+    const result = await prisma.device.create({
+      data: {
+        name,
+        macAddress,
+        establishmentId: user.establishmentId,
+      },
+    });
 
-  const result = await prisma.device.create({
-    data: {
-      name,
-      macAddress,
-      establishmentId: user.establishmentId,
-    },
-  });
-
-  return res.json(result);
+    return res.json({ status: "ok", data: result });
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (req, res) => {
+router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (req, res, next) => {
   // const { macAddress, name, battery, groupId } = req.body;
   const { macAddress, name, groupId } = req.body;
 
@@ -76,21 +93,25 @@ router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (r
     });
   }
 
-  const result = await prisma.device.update({
-    where: {
-      macAddress,
-    },
-    data: {
-      name,
-      // battery,
-      groupId,
-    },
-  });
+  try {
+    const result = await prisma.device.update({
+      where: {
+        macAddress,
+      },
+      data: {
+        name,
+        // battery,
+        groupId,
+      },
+    });
 
-  return res.json(result);
+    return res.json({ status: "ok", data: result });
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.delete("/device/:macAddress", loginRequired, checkDeviceBelongsToEstablishment, async (req, res) => {
+router.delete("/device/:macAddress", loginRequired, checkDeviceBelongsToEstablishment, async (req, res, next) => {
   const { macAddress } = req.params;
 
   if (!macAddress) {
@@ -100,13 +121,17 @@ router.delete("/device/:macAddress", loginRequired, checkDeviceBelongsToEstablis
     });
   }
 
-  const result = await prisma.device.delete({
-    where: {
-      macAddress,
-    },
-  });
+  try {
+    const result = await prisma.device.delete({
+      where: {
+        macAddress,
+      },
+    });
 
-  return res.json(result);
+    return res.json({ status: "ok", data: result });
+  } catch (e) {
+    next(e);
+  }
 });
 
 export default router;

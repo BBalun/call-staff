@@ -1,15 +1,12 @@
-export default function Index() {
-  return (
-    <>
-      <style jsx>{`
-        section {
-          text-align: center;
-        }
-      `}</style>
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-      <section className="bg-gray-700 text-white">
-        <h1>Hello</h1>
-      </section>
-    </>
-  );
+export default function Index() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/home");
+  }, []);
+
+  return <></>;
 }

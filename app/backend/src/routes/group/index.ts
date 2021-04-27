@@ -5,14 +5,21 @@ import loginRequired from "../../middleware/loginRequired";
 
 const router = express.Router();
 
-router.get("/groups", loginRequired, async (req, res) => {
-  const groups = await prisma.group.findMany({
-    where: {
-      establishmentId: req.user?.establishmentId,
-    },
-  });
+router.get("/groups", loginRequired, async (req, res, next) => {
+  try {
+    const groups = await prisma.group.findMany({
+      where: {
+        establishmentId: req.user?.establishmentId,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    });
 
-  return res.json(groups);
+    return res.json({ status: "ok", data: groups });
+  } catch (e) {
+    next(e);
+  }
 });
 
 router.get("/group/:id", loginRequired, checkGroupBelongsToEstablishment, async (req, res) => {
@@ -44,17 +51,21 @@ router.post("/group", loginRequired, async (req, res) => {
     });
   }
 
-  const result = await prisma.group.create({
-    data: {
-      name,
-      establishmentId: req.user!.establishmentId,
-    },
-  });
+  try {
+    const result = await prisma.group.create({
+      data: {
+        name,
+        establishmentId: req.user!.establishmentId,
+      },
+    });
 
-  return res.json(result);
+    return res.json({ status: "ok", data: result });
+  } catch (err) {
+    return res.status(400).json({ status: "error", msg: "name has to be unique" });
+  }
 });
 
-router.put("/group", loginRequired, checkGroupBelongsToEstablishment, async (req, res) => {
+router.put("/group", loginRequired, checkGroupBelongsToEstablishment, async (req, res, next) => {
   const { id, name } = req.body;
 
   if (!id || !name) {
@@ -64,16 +75,33 @@ router.put("/group", loginRequired, checkGroupBelongsToEstablishment, async (req
     });
   }
 
-  const result = await prisma.group.update({
-    where: {
-      id,
-    },
-    data: {
-      name,
-    },
-  });
+  try {
+    const group = await prisma.group.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!group) {
+      return res.status(400).json({ status: "error", msg: "group with specified id does not exits" });
+    }
+  } catch (e) {
+    return next(e);
+  }
 
-  return res.json(result);
+  try {
+    const result = await prisma.group.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+      },
+    });
+
+    return res.json({ status: "ok", data: result });
+  } catch (e) {
+    return res.status(400).json({ status: "error", msg: "group with same name already exists" });
+  }
 });
 
 router.delete("/group/:id", loginRequired, checkGroupBelongsToEstablishment, async (req, res) => {
@@ -86,13 +114,17 @@ router.delete("/group/:id", loginRequired, checkGroupBelongsToEstablishment, asy
     });
   }
 
-  const result = await prisma.group.delete({
-    where: {
-      id,
-    },
-  });
+  try {
+    const result = await prisma.group.delete({
+      where: {
+        id,
+      },
+    });
 
-  return res.json(result);
+    return res.json({ status: "ok", data: result });
+  } catch (e) {
+    return res.status(400).json({ status: "error", msg: "group not found" });
+  }
 });
 
 export default router;

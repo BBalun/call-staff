@@ -4,7 +4,7 @@ import loginRequired from "../../middleware/loginRequired";
 
 const router = express.Router();
 
-router.get("/requests", loginRequired, async (req, res) => {
+router.get("/requests", loginRequired, async (req, res, next) => {
   const where: any = {
     device: {
       establishmentId: req.user!.establishmentId,
@@ -21,17 +21,21 @@ router.get("/requests", loginRequired, async (req, res) => {
     where.device = { ...where.device, groupId: req.query.groupId };
   }
 
-  const result = await prisma.request.findMany({
-    where,
-    orderBy: {
-      time: "asc",
-    },
-  });
+  try {
+    const result = await prisma.request.findMany({
+      where,
+      orderBy: {
+        time: "asc",
+      },
+    });
 
-  return res.json(result);
+    return res.json({ status: "ok", data: result });
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.post("/request", async (req, res) => {
+router.post("/request", async (req, res, next) => {
   let { batteryLevel, button, deviceAddress, gatewayAddress } = req.body; // TODO validation
   batteryLevel = parseInt(batteryLevel);
   button = parseInt(button);
@@ -43,28 +47,32 @@ router.post("/request", async (req, res) => {
     });
   }
 
-  const device = await prisma.device.findUnique({
-    where: {
-      macAddress: deviceAddress,
-    },
-  });
+  try {
+    const device = await prisma.device.findUnique({
+      where: {
+        macAddress: deviceAddress,
+      },
+    });
 
-  if (!device) {
-    return res.status(400).end();
+    if (!device) {
+      return res.status(400).json({ status: "error", msg: "invalid mac address" });
+    }
+
+    const newRequest = await prisma.request.create({
+      data: {
+        battery: batteryLevel,
+        button,
+        deviceMac: deviceAddress,
+      },
+    });
+
+    return res.json({ status: "ok", data: newRequest });
+  } catch (e) {
+    next(e);
   }
-
-  const newRequest = await prisma.request.create({
-    data: {
-      battery: batteryLevel,
-      button,
-      deviceMac: deviceAddress,
-    },
-  });
-
-  return res.json(newRequest);
 });
 
-router.put("/request/:id/finish", loginRequired, async (req, res) => {
+router.put("/request/:id/finish", loginRequired, async (req, res, next) => {
   const { id } = req.params;
   if (!id) {
     return res.status(400).json({
@@ -73,36 +81,40 @@ router.put("/request/:id/finish", loginRequired, async (req, res) => {
     });
   }
 
-  const request = await prisma.request.findUnique({
-    where: {
-      id,
-    },
-    select: {
-      device: {
-        select: {
-          establishmentId: true,
+  try {
+    const request = await prisma.request.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        device: {
+          select: {
+            establishmentId: true,
+          },
         },
       },
-    },
-  });
-
-  if (request?.device.establishmentId !== req.user!.establishmentId) {
-    return res.status(400).json({
-      status: "error",
-      msg: "request does not exist or you are trying to finish request that does not belong to your establishment",
     });
+
+    if (request?.device.establishmentId !== req.user!.establishmentId) {
+      return res.status(400).json({
+        status: "error",
+        msg: "request does not exist or you are trying to finish request that does not belong to your establishment",
+      });
+    }
+
+    const result = await prisma.request.update({
+      where: {
+        id: id,
+      },
+      data: {
+        timeFinished: new Date(),
+      },
+    });
+
+    return res.json({ status: "ok", data: result });
+  } catch (e) {
+    next(e);
   }
-
-  const result = await prisma.request.update({
-    where: {
-      id: id,
-    },
-    data: {
-      timeFinished: new Date(),
-    },
-  });
-
-  return res.json(result);
 });
 
 export default router;
