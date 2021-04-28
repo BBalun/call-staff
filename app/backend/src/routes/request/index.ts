@@ -38,7 +38,7 @@ router.get("/requests", loginRequired, async (req, res, next) => {
 router.post("/request", async (req, res, next) => {
   let { batteryLevel, button, deviceAddress, gatewayAddress } = req.body; // TODO validation
   batteryLevel = parseInt(batteryLevel);
-  button = parseInt(button);
+  button = parseInt(button); // TODO this should be number, not a string
 
   if (!deviceAddress || !button || !batteryLevel) {
     return res.status(400).json({
