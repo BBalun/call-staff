@@ -1,7 +1,7 @@
 import { Center, Container } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { IRequest } from "../interfaces/request";
-import { getRequests } from "../utils/getRequests";
+import { IRequest } from "../../interfaces/request";
+import { getRequests } from "../../utils/getRequests";
 import Request from "./request";
 import RequestListOptions from "./requestListOptions";
 

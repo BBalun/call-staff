@@ -1,7 +1,7 @@
 import { Select, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { IGroup } from "../interfaces/group";
-import { getGroups } from "../utils/getGroups";
+import { IGroup } from "../../interfaces/group";
+import { getGroups } from "../../utils/getGroups";
 
 interface IRequestListOptionsProps {
   setGroupId: (string) => void;

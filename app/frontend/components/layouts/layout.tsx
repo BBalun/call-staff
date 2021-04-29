@@ -1,5 +1,5 @@
 import LoginRequired from "../loginRequired";
-import Sidebar from "../sidebar";
+import Sidebar from "../sidebar/sidebar";
 
 export default function Layout({ children }) {
   return (

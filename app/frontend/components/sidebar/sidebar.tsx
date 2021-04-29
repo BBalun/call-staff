@@ -1,16 +1,4 @@
-import {
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-  Button,
-  Box,
-  Center,
-} from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerOverlay, DrawerContent, useDisclosure, Center } from "@chakra-ui/react";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Links from "./links";

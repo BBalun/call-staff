@@ -1,4 +1,4 @@
-import RequestList from "../components/requestList";
+import RequestList from "../components/request/requestList";
 import Layout from "../components/layouts/layout";
 
 export default function Home() {

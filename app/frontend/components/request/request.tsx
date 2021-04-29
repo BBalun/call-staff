@@ -1,6 +1,6 @@
-import { IRequest } from "../interfaces/request";
+import { IRequest } from "../../interfaces/request";
 import { Button, Box } from "@chakra-ui/react";
-import { finisheRequest } from "../utils/finishRequest";
+import { finisheRequest } from "../../utils/finishRequest";
 
 interface IRequestProps extends IRequest {}
 
