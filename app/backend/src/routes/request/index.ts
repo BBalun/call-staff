@@ -37,13 +37,21 @@ router.get("/requests", loginRequired, async (req, res, next) => {
 
 router.post("/request", async (req, res, next) => {
   let { batteryLevel, button, deviceAddress, gatewayAddress } = req.body; // TODO validation
-  batteryLevel = parseInt(batteryLevel);
-  button = parseInt(button); // TODO this should be number, not a string
+  // batteryLevel = parseInt(batteryLevel);
+  // button = parseInt(button); // TODO this should be number, not a string
 
-  if (!deviceAddress || !button || !batteryLevel) {
+  // 0 == false
+  if (!deviceAddress || button === null || batteryLevel === null) {
     return res.status(400).json({
       status: "error",
       msg: "deviceAddress, batteryLevel and button are required",
+    });
+  }
+
+  if (button <= 0) {
+    return res.status(400).json({
+      statsu: "error",
+      msg: "button has to be positive integer",
     });
   }
 
