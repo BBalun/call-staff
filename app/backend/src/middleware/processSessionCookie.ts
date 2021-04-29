@@ -8,6 +8,9 @@ export default async function processSessionCookies(req: Request, res: Response,
       where: {
         session: req.cookies.session,
       },
+      include: {
+        role: true,
+      },
     });
 
     if (result) {

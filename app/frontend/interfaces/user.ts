@@ -6,4 +6,7 @@ export interface IUser {
   establishmentId: string;
   roleId: string;
   session: string | null;
+  role: {
+    name: string;
+  };
 }

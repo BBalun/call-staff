@@ -28,8 +28,8 @@ function Login() {
   const router = useRouter();
 
   async function onSubmit(userInfo: IFormInput) {
-    const [res, msg] = await loginUser(userInfo);
-    if (res) {
+    const [ok, msg] = await loginUser(userInfo);
+    if (ok) {
       router.push("/home");
       return;
     }
