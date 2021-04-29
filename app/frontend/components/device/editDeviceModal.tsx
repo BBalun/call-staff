@@ -72,7 +72,6 @@ export default function EditDeviceModal({ isOpen, onClose, reload, device }: IEd
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues,
   } = useForm<IFormInput>({
     resolver: yupResolver(schema),
     defaultValues: device,

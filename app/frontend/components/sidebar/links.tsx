@@ -1,7 +1,10 @@
 import { UnorderedList, ListItem, Link } from "@chakra-ui/react";
 import nextLink from "next/link";
+import { updateYield } from "typescript";
+import { useUserContext } from "../../contexts/userContext";
 
 export default function Links() {
+  const [user] = useUserContext();
   return (
     <UnorderedList listStyleType="none" spacing="5" fontSize="xl" m="0">
       <ListItem>
@@ -29,6 +32,15 @@ export default function Links() {
           Settings
         </Link>
       </ListItem>
+
+      {user.role.name === "admin" && (
+        <ListItem>
+          <Link href="/admin" as={nextLink}>
+            Add new user
+          </Link>
+        </ListItem>
+      )}
+
       <ListItem>
         <Link href="/logout" as={nextLink}>
           Logout

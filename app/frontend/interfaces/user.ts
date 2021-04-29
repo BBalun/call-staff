@@ -7,6 +7,7 @@ export interface IUser {
   roleId: string;
   session: string | null;
   role: {
+    id: string;
     name: string;
   };
 }

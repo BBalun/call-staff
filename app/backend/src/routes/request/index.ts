@@ -27,6 +27,13 @@ router.get("/requests", loginRequired, async (req, res, next) => {
       orderBy: {
         time: "asc",
       },
+      include: {
+        device: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
     return res.json({ status: "ok", data: result });

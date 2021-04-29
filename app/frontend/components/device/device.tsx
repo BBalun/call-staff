@@ -23,7 +23,7 @@ export default function Device(props: IDeviceProps) {
         <Text>Mac address: {props.macAddress}</Text>
         <Text>Name: {props.name}</Text>
         <Text>Battery level: {props.battery ?? "?"}%</Text>
-        <Text>Group: {props.group?.name}</Text>
+        <Text>Group: {props.group?.name ?? "No group"}</Text>
         <Button onClick={delDevice}>Delete</Button>
         <EditDeviceButton {...props} />
       </Box>

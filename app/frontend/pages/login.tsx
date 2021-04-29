@@ -55,10 +55,6 @@ function Login() {
             Login
           </Button>
         </form>
-        <Divider my="2" />
-        <Text textAlign="center">
-          Not registered yet? Create your account <Link href="/register">here!</Link>
-        </Text>
       </Box>
     </Center>
   );

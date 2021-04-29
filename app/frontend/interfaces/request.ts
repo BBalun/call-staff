@@ -5,4 +5,7 @@ export interface IRequest {
   timeFinished: string | null;
   battery: number;
   deviceMac: string;
+  device: {
+    name: string;
+  };
 }
