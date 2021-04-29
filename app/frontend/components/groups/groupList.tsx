@@ -16,7 +16,9 @@ export default function GroupList({ loading, groups, reload }: IGroupList) {
   return (
     <>
       {groups.map((group) => (
-        <Group {...{ group, reload }} key={group.id}></Group>
+        <Box my="5" key={group.id}>
+          <Group {...{ group, reload }} key={group.id}></Group>
+        </Box>
       ))}
     </>
   );

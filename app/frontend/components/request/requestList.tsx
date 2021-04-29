@@ -1,4 +1,4 @@
-import { Center, Container } from "@chakra-ui/react";
+import { Center, Container, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { IRequest } from "../../interfaces/request";
 import { getRequests } from "../../utils/getRequests";
@@ -44,24 +44,28 @@ export default function RequestList() {
 
   return (
     <>
-      <Container minW="85%" centerContent>
-        <Center h="100vh" w="100%" bg="blackAlpha.100" d="flex" flexDirection="column">
+      <Container minW="85%" centerContent h="100vh" d="flex" flexDirection="column" pt="28">
+        <Box w="100%" d="flex" justifyContent="flex-end">
           <RequestListOptions setGroupId={setGroupId} />
+        </Box>
+        <Box d="flex" flexDirection="row">
           {loading && <div>Loading ...</div>}
           {!loading &&
             requests.map((req) => {
               // id: string; button: string; time: string; name: string;
               return (
-                <Request
-                  key={req.id}
-                  id={req.id}
-                  buttonName={buttons[req.button - 1]}
-                  time={req.time}
-                  deviceName={req.device.name}
-                />
+                <Box m="2" key={req.id} textAlign="center" p="2">
+                  <Request
+                    key={req.id}
+                    id={req.id}
+                    buttonName={buttons[req.button - 1]}
+                    time={req.time}
+                    deviceName={req.device.name}
+                  />
+                </Box>
               );
             })}
-        </Center>
+        </Box>
       </Container>
     </>
   );

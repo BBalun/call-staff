@@ -2,6 +2,7 @@ import { Box, Center, Container, Text, Button, useDisclosure } from "@chakra-ui/
 import { IGroup } from "../../interfaces/group";
 import { deleteGroup } from "../../utils/deleteGroup";
 import EditGroupModal from "./editGroupModal";
+import { DeleteIcon, EditIcon, AddIcon } from "@chakra-ui/icons";
 
 interface IGroupProps {
   group: IGroup;
@@ -22,11 +23,28 @@ export default function Group({ group, reload }: IGroupProps) {
 
   return (
     <>
-      <Box bg="teal.100" key={group.id}>
-        <Text>Id: {group.id}</Text>
-        <Text>Name: {group.name}</Text>
-        <Button onClick={onOpen}>Edit</Button>
-        <Button onClick={() => delGroup(group.id)}>Delete</Button>
+      <Box
+        bg="blackAlpha.100"
+        borderRadius="lg"
+        key={group.id}
+        p="3"
+        d="flex"
+        flexDir="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        {/* <Text>Id: {group.id}</Text> */}
+        <Text fontSize="lg" pl="5">
+          Name: {group.name}
+        </Text>
+        <Box d="flex" justifyContent="flex-end">
+          <Button colorScheme="blackAlpha" onClick={onOpen} mx="2" leftIcon={<EditIcon />}>
+            Edit
+          </Button>
+          <Button colorScheme="red" onClick={() => delGroup(group.id)} mx="2" leftIcon={<DeleteIcon />}>
+            Delete
+          </Button>
+        </Box>
       </Box>
       <EditGroupModal {...{ isOpen, onClose, reload, group }} />
     </>

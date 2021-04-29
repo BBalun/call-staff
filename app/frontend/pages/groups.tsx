@@ -33,8 +33,8 @@ export default function Groups() {
 
   return (
     <Layout>
-      <Container bg="blackAlpha.100" py="16">
-        <Box mb="5">
+      <Container pt="16" maxW={{ sm: "100%", md: "75%", lg: "container.sm", xl: "container.md" }}>
+        <Box mb="5" w="100%">
           <GroupList loading={loading} groups={groups} reload={reload} />
         </Box>
         <AddGroupButton reload={reload} />

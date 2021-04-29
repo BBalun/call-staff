@@ -1,6 +1,6 @@
-import { IRequest } from "../../interfaces/request";
 import { Button, Box } from "@chakra-ui/react";
 import { finisheRequest } from "../../utils/finishRequest";
+import { Text } from "@chakra-ui/react";
 
 interface IRequestProps {
   id: string;
@@ -18,16 +18,11 @@ export default function Request({ id, time, buttonName, deviceName }: IRequestPr
   }
 
   return (
-    <Box bg="blackAlpha.100">
-      {/* <p>name: {props.device.name}</p> */}
-      {/* <p>id: {props.id}</p> */}
-      {/* <p>button: {props.button}</p> */}
-      <p>{deviceName}</p>
-      <p>name: {buttonName}</p>
-      <p>{Math.floor(new Date().getTime() / (1000 * 60) - new Date(time).getTime() / (1000 * 60))} minutes ago</p>
-      <Button onClick={finish} bg="teal.100">
-        Finish
-      </Button>
+    <Box bg="twitter.100" borderRadius="xl" p="3">
+      <Text>{deviceName}</Text>
+      <Text>{buttonName}</Text>
+      <Text>{Math.floor(new Date().getTime() / (1000 * 60) - new Date(time).getTime() / (1000 * 60))} minutes ago</Text>
+      <Button onClick={finish}>Finish</Button>
     </Box>
   );
 }
