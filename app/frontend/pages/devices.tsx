@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { IDevice } from "../interfaces/device";
 import { getDevices } from "../utils/getDevice";
 import DeviceList from "../components/device/deviceList";
-import { Container } from "@chakra-ui/react";
+import { Container, Box } from "@chakra-ui/react";
 import Layout from "../components/layouts/layout";
 import AddDeviceButton from "../components/device/addDeviceButton";
 
@@ -38,7 +38,9 @@ export default function Devices() {
     <Layout>
       <Container h="100vh" py="12">
         <DeviceList devices={devices} reload={reload} />
-        <AddDeviceButton reload={reload} />
+        <Box d="flex" justifyContent="flex-end">
+          <AddDeviceButton reload={reload} />
+        </Box>
       </Container>
     </Layout>
   );

@@ -44,6 +44,7 @@ export default function AddDeviceModal({ isOpen, onClose, reload }) {
     const [ok, data, msg] = await getGroups();
     if (!ok) {
       alert(msg);
+      return;
     }
     setGroups(data);
     setLoading(false);
@@ -63,6 +64,7 @@ export default function AddDeviceModal({ isOpen, onClose, reload }) {
 
   async function onSubmit({ macAddress, name, groupId }: IFormInput) {
     let [ok, msg] = [false, null];
+    macAddress = macAddress.toLowerCase();
     if (groupId !== "none") {
       [ok, msg] = await createDevice({ macAddress, name, groupId });
     } else {

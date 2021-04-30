@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/layout";
 import { IDevice } from "../../interfaces/device";
 import Device from "./device";
 
@@ -10,7 +11,9 @@ export default function DeviceList({ devices, reload }: IDeviceListProps) {
   return (
     <>
       {devices.map((device) => (
-        <Device {...device} key={device.macAddress} reload={reload} />
+        <Box my="5" key={device.macAddress}>
+          <Device {...device} key={device.macAddress} reload={reload} />
+        </Box>
       ))}
     </>
   );

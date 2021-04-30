@@ -3,7 +3,7 @@
 #include <ESP8266WiFi.h>        // Include the Wi-Fi library
 #include <ESP8266HTTPClient.h>
 
-const char* serverAddress = "http://192.168.1.119:8081/call";
+const char* serverAddress = "http://192.168.1.102:8081/api/request";
 
 const char* ssid     = "balu";         // The SSID (name) of the Wi-Fi network you want to connect to
 const char* password = "16balu11";     // The password of the Wi-Fi network

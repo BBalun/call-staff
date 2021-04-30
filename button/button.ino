@@ -1,6 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <espnow.h>
 
+// EC:FA:BC:0E:AB:DD
+
 #define MY_ROLE ESP_NOW_ROLE_CONTROLLER  // set the role of this device: CONTROLLER, SLAVE, COMBO
 #define RECEIVER_ROLE ESP_NOW_ROLE_SLAVE // set the role of the receiver
 #define WIFI_CHANNEL 1

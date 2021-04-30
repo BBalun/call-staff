@@ -1,5 +1,6 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
 import EditDeviceModal from "./editDeviceModal";
+import { EditIcon } from "@chakra-ui/icons";
 
 interface IEditDeviceButtonProps {
   reload: () => void;
@@ -13,7 +14,9 @@ export default function EditDeviceButton({ reload, name, macAddress, groupId }: 
 
   return (
     <>
-      <Button onClick={onOpen}>Edit</Button>
+      <Button onClick={onOpen} leftIcon={<EditIcon />}>
+        Edit
+      </Button>
 
       <EditDeviceModal {...{ isOpen, onClose, reload, device: { name, macAddress, groupId } }} />
     </>

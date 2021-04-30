@@ -71,6 +71,7 @@ router.post("/device", loginRequired, async (req, res, next) => {
       msg: "name and mac address are required",
     });
   }
+
   try {
     const result = await prisma.device.create({
       data: {

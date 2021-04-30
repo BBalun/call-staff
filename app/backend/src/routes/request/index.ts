@@ -43,7 +43,8 @@ router.get("/requests", loginRequired, async (req, res, next) => {
 });
 
 router.post("/request", async (req, res, next) => {
-  let { batteryLevel, button, deviceAddress, gatewayAddress } = req.body; // TODO validation
+  let { batteryLevel, button, deviceAddress, gatewayAddress } = req.body; // TODO
+
   // batteryLevel = parseInt(batteryLevel);
   // button = parseInt(button); // TODO this should be number, not a string
 
@@ -78,6 +79,15 @@ router.post("/request", async (req, res, next) => {
         battery: batteryLevel,
         button,
         deviceMac: deviceAddress,
+      },
+    });
+
+    await prisma.device.update({
+      where: {
+        macAddress: deviceAddress,
+      },
+      data: {
+        battery: batteryLevel,
       },
     });
 

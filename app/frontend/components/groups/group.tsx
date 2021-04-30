@@ -26,7 +26,6 @@ export default function Group({ group, reload }: IGroupProps) {
       <Box
         bg="blackAlpha.100"
         borderRadius="lg"
-        key={group.id}
         p="3"
         d="flex"
         flexDir="row"
