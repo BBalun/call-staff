@@ -36,6 +36,9 @@ export default function EditGroupModal({ isOpen, onClose, reload, group }) {
     formState: { errors },
   } = useForm<IFormInput>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      name: group.name,
+    },
   });
 
   async function onSubmit(groupInfo: IFormInput) {

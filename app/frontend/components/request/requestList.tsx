@@ -48,7 +48,7 @@ export default function RequestList() {
         <Box w="100%" d="flex" justifyContent="flex-end">
           <RequestListOptions setGroupId={setGroupId} />
         </Box>
-        <Box d="flex" flexDirection="row">
+        <Box d="flex" flexDirection="row" flexWrap="wrap" justifyContent="center">
           {loading && <div>Loading ...</div>}
           {!loading &&
             requests.map((req) => {
