@@ -24,8 +24,10 @@ export default function RequestListOptions({ setGroupId }: IRequestListOptionsPr
   }
 
   return (
-    <Box bg="twitter.100">
+    <Box>
       <Select
+        colorScheme="black"
+        variant="filled"
         onChange={(event) => {
           setGroupId(event.target.value);
         }}

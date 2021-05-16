@@ -52,7 +52,6 @@ export default function RequestList() {
           {loading && <div>Loading ...</div>}
           {!loading &&
             requests.map((req) => {
-              // id: string; button: string; time: string; name: string;
               return (
                 <Box m="2" key={req.id} textAlign="center" p="2">
                   <Request

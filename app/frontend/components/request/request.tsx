@@ -18,11 +18,13 @@ export default function Request({ id, time, buttonName, deviceName }: IRequestPr
   }
 
   return (
-    <Box bg="twitter.100" borderRadius="xl" p="3">
+    <Box p="3" bg="blackAlpha.100">
       <Text>{deviceName}</Text>
       <Text>{buttonName}</Text>
       <Text>{Math.floor(new Date().getTime() / (1000 * 60) - new Date(time).getTime() / (1000 * 60))} minutes ago</Text>
-      <Button onClick={finish}>Finish</Button>
+      <Button colorScheme="black" onClick={finish} mt="2" variant="outline">
+        Finish
+      </Button>
     </Box>
   );
 }
