@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getGroups } from "../utils/getGroups";
 import { IGroup } from "../interfaces/group";
+import LoginRequired from "../components/loginRequired";
 
 export default function Groups() {
   const [loading, setLoading] = useState(true);
@@ -32,13 +33,15 @@ export default function Groups() {
   }, [reloadFlag]);
 
   return (
-    <Layout>
-      <Container pt="16" maxW={{ sm: "100%", md: "75%", lg: "container.sm", xl: "container.md" }}>
-        <Box mb="5" w="100%">
-          <GroupList loading={loading} groups={groups} reload={reload} />
-        </Box>
-        <AddGroupButton reload={reload} />
-      </Container>
-    </Layout>
+    <LoginRequired>
+      <Layout>
+        <Container pt="16" maxW={{ sm: "100%", md: "75%", lg: "container.sm", xl: "container.md" }}>
+          <Box mb="5" w="100%">
+            <GroupList loading={loading} groups={groups} reload={reload} />
+          </Box>
+          <AddGroupButton reload={reload} />
+        </Container>
+      </Layout>
+    </LoginRequired>
   );
 }

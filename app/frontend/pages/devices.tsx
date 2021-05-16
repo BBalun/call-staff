@@ -5,6 +5,7 @@ import DeviceList from "../components/device/deviceList";
 import { Container, Box } from "@chakra-ui/react";
 import Layout from "../components/layouts/layout";
 import AddDeviceButton from "../components/device/addDeviceButton";
+import LoginRequired from "../components/loginRequired";
 
 export default function Devices() {
   const [devices, setDevices] = useState<IDevice[]>([]);
@@ -35,13 +36,15 @@ export default function Devices() {
   }
 
   return (
-    <Layout>
-      <Container h="100vh" py="12">
-        <DeviceList devices={devices} reload={reload} />
-        <Box d="flex" justifyContent="flex-end">
-          <AddDeviceButton reload={reload} />
-        </Box>
-      </Container>
-    </Layout>
+    <LoginRequired>
+      <Layout>
+        <Container h="100vh" py="12">
+          <DeviceList devices={devices} reload={reload} />
+          <Box d="flex" justifyContent="flex-end">
+            <AddDeviceButton reload={reload} />
+          </Box>
+        </Container>
+      </Layout>
+    </LoginRequired>
   );
 }

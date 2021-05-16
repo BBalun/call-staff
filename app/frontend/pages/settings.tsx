@@ -1,6 +1,7 @@
 import { Container } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Layout from "../components/layouts/layout";
+import LoginRequired from "../components/loginRequired";
 import SettingsForm from "../components/settings/settingsForm";
 import { IEstablishmentSettings } from "../interfaces/establishmentSettings";
 import { getSettings } from "../utils/getSettings";
@@ -32,10 +33,12 @@ export default function Settings() {
   }
 
   return (
-    <Layout>
-      <Container h="100vh" py="16">
-        <SettingsForm settings={settings} />
-      </Container>
-    </Layout>
+    <LoginRequired>
+      <Layout>
+        <Container h="100vh" py="16">
+          <SettingsForm settings={settings} />
+        </Container>
+      </Layout>
+    </LoginRequired>
   );
 }

@@ -1,10 +1,13 @@
 import RequestList from "../components/request/requestList";
 import Layout from "../components/layouts/layout";
+import LoginRequired from "../components/loginRequired";
 
 export default function Home() {
   return (
-    <Layout>
-      <RequestList />
-    </Layout>
+    <LoginRequired>
+      <Layout>
+        <RequestList />
+      </Layout>
+    </LoginRequired>
   );
 }
