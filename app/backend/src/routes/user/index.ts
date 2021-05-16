@@ -154,4 +154,58 @@ router.get("/logout", (req, res) => {
   });
 });
 
+router.put("/user/password", loginRequired, async (req, res, next) => {
+  const { password, newPassword, newPasswordConfirm } = req.body;
+
+  if (!password || !newPassword || !newPasswordConfirm) {
+    return res.status(400).json({
+      status: "error",
+      msg: "password, newPassword and newPasswordConfirm are required",
+    });
+  }
+
+  if (newPasswordConfirm !== newPassword) {
+    return res.status(400).json({
+      status: "error",
+      msg: "newPassword and newPasswordConfirm have to to match",
+    });
+  }
+
+  try {
+    // check user credentials
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.user!.id,
+      },
+      select: {
+        password: true,
+      },
+    });
+
+    // check password
+    if (!(await bcrypt.compare(password, user!.password))) {
+      return res.status(400).json({
+        status: "error",
+        msg: "password is incorrect",
+      });
+    }
+
+    // update password
+    await prisma.user.update({
+      where: {
+        id: req.user!.id,
+      },
+      data: {
+        password: await bcrypt.hash(newPassword, 10),
+      },
+    });
+
+    return res.json({
+      status: "ok",
+    });
+  } catch (e) {
+    next();
+  }
+});
+
 export default router;

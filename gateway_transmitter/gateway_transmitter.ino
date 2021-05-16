@@ -219,10 +219,10 @@ void startServer() {
   server.begin();
 }
 
-bool isWifiConnected() {
-//  return WiFi.status() == WL_CONNECTED;
-  return isWifiConnected;
-}
+//bool isWifiConnected() {
+////  return WiFi.status() == WL_CONNECTED;
+//  return isWifiConnected;
+//}
 
 void setup() {
   EEPROM.begin(512); 
@@ -275,14 +275,14 @@ void sendPostRequest(const PacketFromButton& packet) {
 }
 
 void loop() {
-  if (!isWifiConnected()) {
-    delay(1);
-    if (tryConnectFlag) {
-      tryConnectFlag = false;
-      readCredentials(ssid, password);
-      connectToWiFi(ssid, password);
+  if (!isWifiConnected) {
+    if (!tryConnectFlag) {
+      return;
     }
-    return;
+    delay(1);
+    tryConnectFlag = false;
+    readCredentials(ssid, password);
+    connectToWiFi(ssid, password);
   }
 
   ledOn();
