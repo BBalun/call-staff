@@ -32,7 +32,6 @@ export default function Group({ group, reload }: IGroupProps) {
         justifyContent="space-between"
         alignItems="center"
       >
-        {/* <Text>Id: {group.id}</Text> */}
         <Text fontSize="lg" pl="5">
           Name: {group.name}
         </Text>

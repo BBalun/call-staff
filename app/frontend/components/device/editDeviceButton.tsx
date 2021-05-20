@@ -14,7 +14,7 @@ export default function EditDeviceButton({ reload, name, macAddress, groupId }: 
 
   return (
     <>
-      <Button onClick={onOpen} leftIcon={<EditIcon />}>
+      <Button onClick={onOpen} leftIcon={<EditIcon />} colorScheme="blackAlpha">
         Edit
       </Button>
 

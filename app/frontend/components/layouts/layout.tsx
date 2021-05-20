@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useIsAdmin } from "../../hooks/useIsAdmin";
 import Sidebar from "../sidebar/Sidebar";
+import Head from "next/head";
 
 export default function Layout({ children }) {
   const isAdmin = useIsAdmin();
@@ -16,6 +16,9 @@ export default function Layout({ children }) {
 
   return (
     <>
+      <Head>
+        <title>System to call stuff</title>
+      </Head>
       <Sidebar />
       {children}
     </>

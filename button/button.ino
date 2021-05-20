@@ -49,7 +49,8 @@ void setup()
   if (digitalRead(BUTTON_PIN1) == LOW)
   {
     button = 1;
-  } else if (digitalRead(BUTTON_PIN2) == LOW)
+  } 
+  else if (digitalRead(BUTTON_PIN2) == LOW)
   {
     button = 2;
   }

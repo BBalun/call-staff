@@ -89,7 +89,6 @@ router.post("/device", loginRequired, async (req, res, next) => {
 });
 
 router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (req, res, next) => {
-  // const { macAddress, name, battery, groupId } = req.body;
   const { macAddress, name, groupId } = req.body;
 
   if (!macAddress || !name) {
@@ -98,6 +97,15 @@ router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (r
       msg: "name, mac address id are required",
     });
   }
+
+  const macRegex = new RegExp("^[a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5}$");
+  if (!macRegex.test(macAddress)) {
+    return res.status(400).json({
+      status: "error",
+      msg: "invalid format of mac address",
+    });
+  }
+
   if (groupId) {
     try {
       const group = await prisma.group.findUnique({
@@ -147,6 +155,12 @@ router.delete("/device/:macAddress", loginRequired, checkDeviceBelongsToEstablis
   }
 
   try {
+    await prisma.request.deleteMany({
+      where: {
+        deviceMac: macAddress,
+      },
+    });
+
     const result = await prisma.device.delete({
       where: {
         macAddress,

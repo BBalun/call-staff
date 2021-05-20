@@ -8,62 +8,58 @@ datasource db {
 }
 
 model device {
-  macAddress      String        @id @map("mac_address")
-  name             String        @db.VarChar(30)
-  battery          Int?
-  establishmentId String        @db.Uuid @map("establishment_id")
-  groupId         String?       @db.Uuid @map("group_id")
-  establishment    establishment @relation(fields: [establishmentId], references: [id])
-  group            group?        @relation(fields: [groupId], references: [id])
-  request          request[]
+  macAddress      String        @id @map("mac_address") @db.VarChar(17)
+  name            String        @db.VarChar(30)
+  battery         Int?
+  establishmentId String        @map("establishment_id") @db.Uuid
+  groupId         String?       @map("group_id") @db.Uuid
+  establishment   establishment @relation(fields: [establishmentId], references: [id])
+  group           group?        @relation(fields: [groupId], references: [id])
+  request         request[]
 }
 
 model establishment {
-  id      String   @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
+  id      String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name    String   @db.VarChar(50)
   button1 String   @default("button1") @db.VarChar(20)
   button2 String   @default("button2") @db.VarChar(20)
-  button3 String   @default("button3") @db.VarChar(20)
-  button4 String   @default("button4") @db.VarChar(20)
-  button5 String   @default("button5") @db.VarChar(20)
   device  device[]
   group   group[]
   user    user[]
 }
 
 model group {
-  id               String        @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
-  name             String        @unique @db.VarChar(50)
-  establishmentId String        @db.Uuid @map("establishment_id")
-  establishment    establishment @relation(fields: [establishmentId], references: [id])
-  device           device[]
+  id              String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name            String        @unique @db.VarChar(50)
+  establishmentId String        @map("establishment_id") @db.Uuid
+  establishment   establishment @relation(fields: [establishmentId], references: [id])
+  device          device[]
 }
 
 model request {
-  id            String    @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
-  button        Int       @db.SmallInt
-  time          DateTime  @default(now()) @db.Timestamp(6)
-  timeFinished DateTime? @db.Timestamp(6) @map("time_finished")
-  battery       Int       @db.SmallInt
-  deviceMac    String @map("device_mac")
-  device        device    @relation(fields: [deviceMac], references: [macAddress])
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  button       Int       @db.SmallInt
+  time         DateTime  @default(now()) @db.Timestamp(6)
+  timeFinished DateTime? @map("time_finished") @db.Timestamp(6)
+  battery      Int       @db.SmallInt
+  deviceMac    String    @map("device_mac") @db.VarChar(17)
+  device       device    @relation(fields: [deviceMac], references: [macAddress])
 }
 
 model role {
-  id   String @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
+  id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name String @unique
   user user[]
 }
 
 model user {
-  id               String        @id @default(dbgenerated("uuidGeneratev4()")) @db.Uuid
-  email            String        @unique
-  username         String
-  password         String
-  establishmentId String        @db.Uuid @map("establishment_id")
-  roleId          String        @db.Uuid @map("role_id")
-  session          String?       @unique
-  establishment    establishment @relation(fields: [establishmentId], references: [id])
-  role             role          @relation(fields: [roleId], references: [id])
+  id              String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email           String        @unique
+  username        String
+  password        String
+  establishmentId String        @map("establishment_id") @db.Uuid
+  roleId          String        @map("role_id") @db.Uuid
+  session         String?       @unique
+  establishment   establishment @relation(fields: [establishmentId], references: [id])
+  role            role          @relation(fields: [roleId], references: [id])
 }
-

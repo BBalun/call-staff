@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormLabel, Input, Button, Center, Heading, Text, Box, Divider } from "@chakra-ui/react";
-import Link from "next/link";
+import { FormLabel, Input, Button, Center, Heading, Text, Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { loginUser } from "../auth/auth";
+import Head from "next/head";
 
 interface IFormInput {
   email: string;
@@ -33,30 +33,35 @@ function Login() {
       router.push("/home");
       return;
     }
-    alert(msg); // TODO
+    alert(msg);
   }
 
   return (
-    <Center height="100vh" bg="blackAlpha.100">
-      <Box p="7" w="sm" borderWidth="thin" borderRadius="12" bg="white" borderColor="gray.100" boxShadow="xl">
-        <Heading pb="1" textAlign="center">
-          Login
-        </Heading>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormLabel htmlFor="email">Email:</FormLabel>
-          <Input type="text" {...register("email")} />
-          {errors.email && <Text pl="2">{errors.email.message}</Text>}
-
-          <FormLabel htmlFor="password">Password:</FormLabel>
-          <Input type="password" {...register("password")} />
-          {errors.password && <Text pl="2">{errors.password.message}</Text>}
-
-          <Button type="submit" width="100%" marginTop="2">
+    <>
+      <Head>
+        <title>System to call stuff</title>
+      </Head>
+      <Center height="100vh" bg="blackAlpha.100">
+        <Box p="7" w="sm" borderWidth="thin" borderRadius="12" bg="white" borderColor="gray.100" boxShadow="xl">
+          <Heading pb="1" textAlign="center">
             Login
-          </Button>
-        </form>
-      </Box>
-    </Center>
+          </Heading>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FormLabel htmlFor="email">Email:</FormLabel>
+            <Input type="text" {...register("email")} />
+            {errors.email && <Text pl="2">{errors.email.message}</Text>}
+
+            <FormLabel htmlFor="password">Password:</FormLabel>
+            <Input type="password" {...register("password")} />
+            {errors.password && <Text pl="2">{errors.password.message}</Text>}
+
+            <Button type="submit" width="100%" marginTop="2">
+              Login
+            </Button>
+          </form>
+        </Box>
+      </Center>
+    </>
   );
 }
 

@@ -36,7 +36,7 @@ export default function Device(props: IDeviceProps) {
           <Text>Group: {props.group?.name ?? "No group"}</Text>
         </Box>
         <Box d="flex" justifyContent="flex-end">
-          <Button mx="1" onClick={delDevice} leftIcon={<DeleteIcon />}>
+          <Button mx="1" onClick={delDevice} leftIcon={<DeleteIcon />} colorScheme="red">
             Delete
           </Button>
           <Box mx="1">

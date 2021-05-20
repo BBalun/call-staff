@@ -22,12 +22,12 @@ router.get("/establishment", loginRequired, async (req, res, next) => {
 
 router.put("/establishment", loginRequired, async (req, res, next) => {
   const user = req.user!;
-  const { id, name, button1, button2, button3, button4, button5 } = req.body;
+  const { id, name, button1, button2 } = req.body;
 
-  if (!id || !name || !button1 || !button2 || !button3 || !button4 || !button5) {
+  if (!id || !name || !button1 || !button2) {
     return res.status(400).json({
       status: "error",
-      msg: "id, name, button1-button5 are required",
+      msg: "id, name, button1 and button2 are required",
     });
   }
 
@@ -47,9 +47,6 @@ router.put("/establishment", loginRequired, async (req, res, next) => {
         name,
         button1,
         button2,
-        button3,
-        button4,
-        button5,
       },
     });
 

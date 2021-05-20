@@ -32,7 +32,10 @@ const schema = yup.object().shape({
     .required("Name is required")
     .trim()
     .min(3, "Name of the group has to be at least 3 characters long"),
-  macAddress: yup.string().required("Mac address is required").length(17, "Invalid length"),
+  macAddress: yup
+    .string()
+    .required("Mac address is required")
+    .matches(/^[a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5}$/, "Invalid format"),
   groupId: yup.string(),
 });
 
