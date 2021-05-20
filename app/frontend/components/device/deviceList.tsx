@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import { IDevice } from "../../interfaces/device";
-import Device from "./device";
+import Device from "./Device";
 
 interface IDeviceListProps {
   devices: IDevice[];

@@ -1,7 +1,7 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 
-import AddDeviceModal from "./addDeviceModal";
+import AddDeviceModal from "./AddDeviceModal";
 
 export default function AddDeviceButton({ reload }) {
   const { isOpen, onOpen, onClose } = useDisclosure();

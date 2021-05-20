@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { IRequest } from "../../interfaces/request";
 import { getRequests } from "../../utils/getRequests";
 import { getSettings } from "../../utils/getSettings";
-import Request from "./request";
-import RequestListOptions from "./requestListOptions";
+import Request from "./Request";
+import RequestListOptions from "./RequestListOptions";
 
 export default function RequestList() {
   const [groupId, setGroupId] = useState<string>(null);

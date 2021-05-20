@@ -1,8 +1,8 @@
 import { Container } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import Layout from "../components/layouts/layout";
-import LoginRequired from "../components/loginRequired";
-import SettingsForm from "../components/settings/settingsForm";
+import Layout from "../components/layouts/Layout";
+import LoginRequired from "../components/LoginRequired";
+import SettingsForm from "../components/settings/SettingsForm";
 import { IEstablishmentSettings } from "../interfaces/establishmentSettings";
 import { getSettings } from "../utils/getSettings";
 

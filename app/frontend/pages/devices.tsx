@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { IDevice } from "../interfaces/device";
 import { getDevices } from "../utils/getDevice";
-import DeviceList from "../components/device/deviceList";
+import DeviceList from "../components/device/DeviceList";
 import { Container, Box } from "@chakra-ui/react";
-import Layout from "../components/layouts/layout";
-import AddDeviceButton from "../components/device/addDeviceButton";
-import LoginRequired from "../components/loginRequired";
+import Layout from "../components/layouts/Layout";
+import AddDeviceButton from "../components/device/AddDeviceButton";
+import LoginRequired from "../components/LoginRequired";
 
 export default function Devices() {
   const [devices, setDevices] = useState<IDevice[]>([]);

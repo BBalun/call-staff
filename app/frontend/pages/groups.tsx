@@ -1,12 +1,12 @@
-import GroupList from "../components/groups/groupList";
-import Layout from "../components/layouts/layout";
-import AddGroupButton from "../components/groups/addGroupButton";
+import GroupList from "../components/groups/GroupList";
+import Layout from "../components/layouts/Layout";
+import AddGroupButton from "../components/groups/AddGroupButton";
 import { Container, Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getGroups } from "../utils/getGroups";
 import { IGroup } from "../interfaces/group";
-import LoginRequired from "../components/loginRequired";
+import LoginRequired from "../components/LoginRequired";
 
 export default function Groups() {
   const [loading, setLoading] = useState(true);

@@ -1,6 +1,6 @@
 import { Box, Center, Container, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { IGroup } from "../../interfaces/group";
-import Group from "./group";
+import Group from "./Group";
 
 interface IGroupList {
   loading: boolean;

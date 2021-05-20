@@ -1,5 +1,5 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
-import EditDeviceModal from "./editDeviceModal";
+import EditDeviceModal from "./EditDeviceModal";
 import { EditIcon } from "@chakra-ui/icons";
 
 interface IEditDeviceButtonProps {

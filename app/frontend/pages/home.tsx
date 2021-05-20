@@ -1,6 +1,6 @@
-import RequestList from "../components/request/requestList";
-import Layout from "../components/layouts/layout";
-import LoginRequired from "../components/loginRequired";
+import RequestList from "../components/request/RequestList";
+import Layout from "../components/layouts/Layout";
+import LoginRequired from "../components/LoginRequired";
 
 export default function Home() {
   return (

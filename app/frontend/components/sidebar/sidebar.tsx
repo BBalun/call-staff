@@ -1,7 +1,7 @@
 import { Drawer, DrawerBody, DrawerOverlay, DrawerContent, useDisclosure, Center } from "@chakra-ui/react";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import Links from "./links";
+import Links from "./Links";
 
 export default function Sidebar() {
   const { isOpen, onOpen, onClose } = useDisclosure();

@@ -1,7 +1,7 @@
 import { Box, Center, Container, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { IGroup } from "../../interfaces/group";
 import { deleteGroup } from "../../utils/deleteGroup";
-import EditGroupModal from "./editGroupModal";
+import EditGroupModal from "./EditGroupModal";
 import { DeleteIcon, EditIcon, AddIcon } from "@chakra-ui/icons";
 
 interface IGroupProps {

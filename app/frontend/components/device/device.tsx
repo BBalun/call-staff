@@ -1,7 +1,7 @@
 import { IDevice } from "../../interfaces/device";
 import { Text, Box, Button } from "@chakra-ui/react";
 import { deleteDevice } from "../../utils/deleteDevice";
-import EditDeviceButton from "./editDeviceButton";
+import EditDeviceButton from "./EditDeviceButton";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 interface IDeviceProps extends IDevice {
