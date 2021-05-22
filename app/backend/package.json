@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx ts-node-dev --files src/index",
-    "db": "npx prisma db pull && npx pal schema camel-case && npx prisma generate",
-    "seed": "ts-node-dev prisma/seed.ts"
+    "start": "npx prisma generate && npx prisma db push --preview-feature && npm run dev"
   },
   "author": "",
   "license": "ISC",

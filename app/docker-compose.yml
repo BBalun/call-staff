@@ -1,0 +1,44 @@
+version: "3.6"
+
+services:
+  api:
+    build: ./backend
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/postgres?schema=public
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+  proxy:
+    build: ./proxy
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - api
+      - frontend
+  postgres:
+    build: ./postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  db_data:

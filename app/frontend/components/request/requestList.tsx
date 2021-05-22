@@ -1,4 +1,4 @@
-import { Center, Container, Box } from "@chakra-ui/react";
+import { Container, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { IRequest } from "../../interfaces/request";
 import { getRequests } from "../../utils/getRequests";
@@ -18,7 +18,7 @@ export default function RequestList() {
       alert(msg);
       return;
     }
-    setButtons([data.button1, data.button2, data.button3, data.button4, data.button5]);
+    setButtons([data.button1, data.button2]);
   }
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function RequestList() {
     const timer = setInterval(async () => {
       const [ok, newRequests, msg] = await getRequests(groupId);
       if (!ok) {
-        alert(msg); // TODO
+        alert(msg);
         return;
       }
       setRequests(newRequests);

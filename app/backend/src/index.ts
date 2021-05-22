@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { prisma } from "./db/prisma";
+import { prisma, seedDb } from "./db/prisma";
 import processSessionCookies from "./middleware/processSessionCookie";
 import router from "./routes/index";
 import morgan from "morgan";
@@ -20,7 +20,8 @@ app.use(cookieParser());
 app.use(processSessionCookies);
 app.use("/api", router);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await seedDb();
   console.log(`app started on port ${PORT}`);
 });
 
