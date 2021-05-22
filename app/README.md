@@ -1,0 +1,9 @@
+- docker-compose up -d
+- app should be available at http://localhost/
+- default admin credentials:
+  - email: admin@admin.com
+  - pw: admin
+- create new user
+- logout
+- login as new user
+- ...
