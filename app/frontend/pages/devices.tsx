@@ -20,7 +20,7 @@ export default function Devices() {
   async function onLoad() {
     const [ok, devices, msg] = await getDevices();
     if (!ok) {
-      alert(msg); // TODO
+      alert(msg);
       return;
     }
     setDevices(devices);

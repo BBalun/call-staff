@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormLabel, Input, Button, Center, Heading, Text, Box, Divider } from "@chakra-ui/react";
+import { FormLabel, Input, Button, Text } from "@chakra-ui/react";
 import { changePassword } from "../../utils/changePassword";
 
 interface IFormInput {
@@ -27,7 +27,6 @@ export default function ChangePasswordForm() {
   });
 
   async function onSubmit(data: IFormInput) {
-    // ...
     const [ok, msg] = await changePassword(data.password, data.newPassword, data.newPasswordConfirm);
     if (!ok) {
       alert(msg);

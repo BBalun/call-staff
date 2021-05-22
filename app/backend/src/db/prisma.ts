@@ -75,4 +75,5 @@ export async function seedDb() {
   await createRoles();
   await createAdminUser();
 }
+
 export const prisma = new PrismaClient();

@@ -17,7 +17,7 @@ export default function RequestListOptions({ setGroupId }: IRequestListOptionsPr
   async function onLoad() {
     const [ok, groups, msg] = await getGroups();
     if (!ok) {
-      alert(msg); // TODO
+      alert(msg);
       return;
     }
     setGroups(groups);

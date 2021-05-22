@@ -1,5 +1,4 @@
 import express from "express";
-import { group } from "node:console";
 import { prisma } from "../../db/prisma";
 import { checkDeviceBelongsToEstablishment } from "../../middleware/checkDeviceBelongsToEstablishment";
 import loginRequired from "../../middleware/loginRequired";
@@ -129,7 +128,6 @@ router.put("/device", loginRequired, checkDeviceBelongsToEstablishment, async (r
       },
       data: {
         name,
-        // battery,
         groupId,
       },
     });

@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormLabel, Input, Button, Center, Heading, Text, Box, Divider } from "@chakra-ui/react";
-import Link from "next/link";
+import { FormLabel, Input, Button, Center, Heading, Text, Box } from "@chakra-ui/react";
 import { createUser } from "../../utils/createUser";
 
 interface IRegisterInput {
@@ -35,7 +34,7 @@ export default function CreateUserForm() {
       alert(msg);
       return;
     }
-    alert("user created"); // TODO
+    alert("user created");
     reset();
   }
 

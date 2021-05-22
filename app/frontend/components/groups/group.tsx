@@ -1,4 +1,4 @@
-import { Box, Center, Container, Text, Button, useDisclosure } from "@chakra-ui/react";
+import { Box, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { IGroup } from "../../interfaces/group";
 import { deleteGroup } from "../../utils/deleteGroup";
 import EditGroupModal from "./EditGroupModal";

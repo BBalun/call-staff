@@ -20,7 +20,7 @@ export default async function processSessionCookies(req: Request, res: Response,
       // extend cookie expiration date by one week
       res.cookie("session", user.session, {
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 7, // one week
+        maxAge: 1000 * 60 * 60 * 24 * 7,
       });
     }
   }

@@ -74,7 +74,7 @@ export default function AddDeviceModal({ isOpen, onClose, reload }) {
       [ok, msg] = await createDevice({ macAddress, name });
     }
     if (!ok) {
-      alert(msg); // TODO
+      alert(msg);
       return;
     }
     onClose();

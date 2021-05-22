@@ -85,7 +85,7 @@ export default function EditDeviceModal({ isOpen, onClose, reload, device }: IEd
       [ok, msg] = await updateDevice({ macAddress, name, groupId: null });
     }
     if (!ok) {
-      alert(msg); // TODO
+      alert(msg);
       return;
     }
     onClose();

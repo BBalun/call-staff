@@ -13,7 +13,7 @@ export default function Request({ id, time, buttonName, deviceName }: IRequestPr
   async function finish() {
     const [ok, msg] = await finisheRequest(id);
     if (!ok) {
-      alert(msg); // TODO
+      alert(msg);
     }
   }
 

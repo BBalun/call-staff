@@ -46,7 +46,7 @@ export default function AddGroupModal({ isOpen, onClose, reload }: IAddGroupModa
   async function onSubmit(groupInfo: IFormInput) {
     const [ok, msg] = await createGroup(groupInfo.name);
     if (!ok) {
-      alert(msg); // TODO
+      alert(msg);
       return;
     }
     onClose();
