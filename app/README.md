@@ -14,7 +14,7 @@ To simulate press of a button:
     ```
       {
         "batteryLevel": 100,
-        "button": 3,
+        "button": 1,
         "deviceAddress": "aa:aa:aa:aa:aa:aa"
       }
     ```

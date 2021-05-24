@@ -4,6 +4,7 @@
 #include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>  
 #include <ESP8266HTTPClient.h>
+#include "websites.h"
 
 const char* serverAddress = "http://192.168.1.102:8081/api/request";
 volatile bool tryConnectFlag = false;
@@ -24,125 +25,6 @@ String password = "";
 byte serial_buffer[sizeof(PacketFromButton)];
 int pos = 0;
 
-const char ok_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trying to connect</title>
-  </head>
-  <body>
-    <p>Trying to connect... Wait until LED on gateway turns on</p>
-  </body>
-</html>)rawliteral";
-
-const char index_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WiFi credentials</title>
-    <style>
-      body {
-        padding: 0;
-        margin: 0;
-        font-size: 18px;
-        font-family: Verdana;
-      }
-
-      main {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100vw;
-        height: 100vh;
-      }
-
-      form {
-        display: flex;
-        flex-direction: column;
-        padding: 1rem;
-        border-radius: 1rem;
-        width: 365px;
-      }
-
-      input {
-        line-height: 1.2rem;
-        padding: 0.4rem;
-        margin: 0.3rem 0;
-        border-width: 0;
-        border-radius: 0.4rem;
-        background-color: rgba(250, 250, 250, 1);
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        border-radius: 0.25rem;
-      }
-
-      button {
-        background-color: #007bff;
-        color: white;
-        display: inline-block;
-        font-weight: 400;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: middle;
-        user-select: none;
-        border: 1px solid transparent;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        border-radius: 0.25rem;
-      }
-
-      label {
-        font-size: 1rem;
-        display: inline-block;
-        margin-bottom: 0.5rem;
-      }
-      .form-group {
-        margin-bottom: 1rem;
-        display: flex;
-        flex-direction: column;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <form action="/wifi" method="get" class="container">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" name="name" id="name" placeholder="Enter WiFi name" />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" name="password" id="password" placeholder="Enter WiFi password" />
-        </div>
-
-        <button type="submit">Save</button>
-      </form>
-    </main>
-  </body>
-</html>
-)rawliteral";
-
-void ledOn() {
-  digitalWrite(D4, LOW);
-}
-
-void ledOff() {
-  digitalWrite(D4, HIGH);
-}
-
 void notFound(AsyncWebServerRequest *request) {
   request->send(404, "text/plain", "Not found");
 }
@@ -162,7 +44,7 @@ void saveCredentials(const String& name, const String& password) {
     EEPROM.write((addr++) % 512, password[i]);
   }
   EEPROM.write((addr++) % 512, '\0');
-  EEPROM.commit();    //Store data to EEPROM
+  EEPROM.commit();    
 }
 
 void readCredentials(String& name, String& password) {
@@ -187,6 +69,8 @@ bool connectToWiFi(const String& ssid, const String& password) {
   return isWifiConnected;
 }
 
+// If Wifi does not exist or entered password is wrong, 
+// AP is created. It can be used to set Wifi credentials
 void startServer() {
   WiFi.mode(WIFI_AP_STA); 
   IPAddress ip(192, 168, 1, 1);
@@ -219,31 +103,6 @@ void startServer() {
   server.begin();
 }
 
-//bool isWifiConnected() {
-////  return WiFi.status() == WL_CONNECTED;
-//  return isWifiConnected;
-//}
-
-void setup() {
-  EEPROM.begin(512); 
-  readCredentials(ssid, password);
-
-  pinMode(D4, OUTPUT);
-  ledOff();
-    
-  Serial.begin(115200);
-  
-  if (ssid.length() == 0 || password.length() == 0) {
-    startServer();
-    return;
-  }
-
-  if (!connectToWiFi(ssid, password)) {
-    startServer();
-    return;
-  }
-}
-
 String convertMacToString(const uint8_t mac[6]) {
   char macStr[18];
   snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
@@ -264,14 +123,28 @@ void sendPostRequest(const PacketFromButton& packet) {
   }";
   
   http.addHeader("Content-Type", "application/json");
-  int httpCode = http.POST(payload); 
-
-//  if (httpCode > 0) { 
-//    String payload = http.getString();   //Get the request response payload
-//    // Serial.println(payload);             //Print the response payload
-//  }
+  http.POST(payload); 
 
   http.end();
+}
+
+void setup() {
+  EEPROM.begin(512); 
+  readCredentials(ssid, password);
+
+  pinMode(D4, OUTPUT);
+    
+  Serial.begin(115200);
+  
+  if (ssid.length() == 0 || password.length() == 0) {
+    startServer();
+    return;
+  }
+
+  if (!connectToWiFi(ssid, password)) {
+    startServer();
+    return;
+  }
 }
 
 void loop() {
@@ -285,7 +158,6 @@ void loop() {
     connectToWiFi(ssid, password);
   }
 
-  ledOn();
   WiFi.softAPdisconnect(true);
   server.end();
 
