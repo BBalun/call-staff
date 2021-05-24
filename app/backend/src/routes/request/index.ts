@@ -52,10 +52,19 @@ router.post("/request", async (req, res, next) => {
     });
   }
 
+  deviceAddress = deviceAddress.toLowerCase();
+
   if (button <= 0) {
     return res.status(400).json({
       statsu: "error",
       msg: "button has to be positive integer",
+    });
+  }
+
+  if (button > 2) {
+    return res.status(400).json({
+      statsu: "error",
+      msg: "button is out of range",
     });
   }
 

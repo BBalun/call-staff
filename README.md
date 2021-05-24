@@ -1,0 +1,1 @@
+Web application is located in app folder. Steps to run it are described in app/README.md file.

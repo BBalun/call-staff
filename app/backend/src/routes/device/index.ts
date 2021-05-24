@@ -71,11 +71,19 @@ router.post("/device", loginRequired, async (req, res, next) => {
     });
   }
 
+  const macRegex = new RegExp("^[a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5}$");
+  if (!macRegex.test(macAddress)) {
+    return res.status(400).json({
+      status: "error",
+      msg: "invalid format of mac address",
+    });
+  }
+
   try {
     const result = await prisma.device.create({
       data: {
         name,
-        macAddress,
+        macAddress: macAddress.toLowerCase(),
         establishmentId: user.establishmentId,
         groupId,
       },

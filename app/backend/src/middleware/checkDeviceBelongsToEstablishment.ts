@@ -14,7 +14,7 @@ export async function checkDeviceBelongsToEstablishment(req: Request, res: Respo
 
   const device = await prisma.device.findUnique({
     where: {
-      macAddress,
+      macAddress: macAddress.toLowerCase(),
     },
   });
 
